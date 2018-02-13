@@ -19,6 +19,7 @@ int help(char *appName)
 }
 
 float work_gain = 1, sleep_gain = 1;
+unsigned int display = 0;
 
 int worker(void)
 {
@@ -27,13 +28,16 @@ int worker(void)
   unsigned int sleep_time, id = (unsigned int) getpid();
   
   srand(id);
-  printf("Worker %u started\n", id);
+  if (display)
+    printf("Worker %u started\n", id);
   
   while (1) {
     
     op_limit = ((float)rand())/((float)RAND_MAX)*work_gain * 1e6;
     sleep_time = ((float)rand())/((float)RAND_MAX)*sleep_gain * 4e3;
-    printf("%1u: %lluop/%uus \n",id,op_limit,sleep_time);
+    
+    if (display)
+      printf("%1u: %lluop/%uus \n",id,op_limit,sleep_time);
     
     for (i = 0; i < op_limit; i++)
       sqrt(rand());
@@ -80,6 +84,10 @@ int main(int argc, char *argv[])
         }
         next_arg += 2;
         break;
+      case 'v':
+        display = 1;
+        next_arg += 1;
+        break;
       case 'w':
         if (next_arg + 1 < argc) {
           if (!sscanf(argv[ next_arg + 1 ],"%f",&work_gain)) {
@@ -97,12 +105,12 @@ int main(int argc, char *argv[])
       case 's':
         if (next_arg + 1 < argc) {
           if (!sscanf(argv[ next_arg + 1 ],"%f",&sleep_gain)) {
-            printf("Invalid bias value...\n");
+            printf("Invalid sleep gain value...\n");
             rc = -EINVAL;
             goto invalid_argument;
           }
         } else {
-          printf("Invalid bias value...\n");
+          printf("Invalid sleep gain value...\n");
           rc = -EINVAL;
           goto invalid_argument;
         }
