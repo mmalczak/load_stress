@@ -12,8 +12,16 @@
 
 int help(char *appName)
 {
-  printf("Help is not yet accessible :(\n");
-    
+  
+  printf(  "Non-exhausting cpu stress generator."   \
+  "  Copyright (C)  2018 Michał Getka\n\n" );
+printf(  "usage:\t%s [-option <arguments>]\n"       \
+  "\t-c NUM\t\tDefines number of cpu workers\n"      \
+  "\t-w FLOAT\tDefines work gain. Defaults to 1.0\n" \
+  "\t-s FLOAT\tDefines sleep gain. Defaults to 1.0\n" \
+  "\t-v\t\tverbose output\n"  \
+  "\t-h\t\tdisplays this help message\n"  \
+  "\n\tReport bugs to michal.getka[at]gmail.com\n", appName);
   exit(0);
   
 }
